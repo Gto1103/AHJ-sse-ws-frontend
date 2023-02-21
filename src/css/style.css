@@ -20,10 +20,9 @@ body {
 	border-radius: 8px;
 	border-color: #535353;
 	padding: 15px 8px;
-	background-color: #221a1a;
+	background-color: #1b1a22;
 	margin-right: 10px;
 	overflow: auto;
-
 }
 
 .messenger-users__user {
@@ -55,10 +54,10 @@ body {
 .messenger {
 	width: 600px;
 	border-radius: 5px;
-	border: 1px solid #21062d;
+	border: 1px solid #06092d;
 	border-radius: 5px;
 	border-color: #535353;
-	background-color: #221a1a;
+	background-color: #1a1a22;
 	padding: 15px;
 }
 
@@ -76,7 +75,7 @@ body {
 }
 
 .messenger__messages::-webkit-scrollbar-thumb {
-	background: linear-gradient(0, #41004f, #532248);
+	background: linear-gradient(0, #00084f, #252253);
 	border-radius: 3px;
 }
 
@@ -91,11 +90,11 @@ body {
 
 .messenger__your-message {
 	align-self: flex-end;
-	background: linear-gradient(210deg, #27002f, #532248);
+	background: linear-gradient(210deg, #02002f, #222253);
 }
 
 .messenger__other-message {
-	background: linear-gradient(30deg, #27002f, #532248);
+	background: linear-gradient(30deg, #03002f, #222253);
 }
 
 .messenger__message-author {
@@ -114,7 +113,7 @@ body {
 	width: calc(100% - 30px);
 	height: 100px;
 	resize: none;
-	background: linear-gradient(200deg, #41004f, #220c1d);
+	background: linear-gradient(200deg, #00184f, #0c0c22);
 	color: #c8c8c8;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	padding: 15px;
@@ -132,7 +131,7 @@ body {
 	top: 30%;
 	left: calc(50% - 125px);
 	width: 250px;
-	background-color: #220c1d;
+	background-color: #0c0c22;
 	border: 1px solid #535353;
 	border-radius: 5px;
 }
@@ -140,7 +139,7 @@ body {
 .authorization-form__textarea {
 	display: block;
 	margin: 15px auto;
-	background: linear-gradient(30deg, #27002f, #532248);
+	background: linear-gradient(30deg, #03002f, #222653);
 	border: 1px solid #535353;
 	border-radius: 5px;
 	text-align: center;
@@ -160,7 +159,7 @@ body {
 	display: block;
 	margin: 15px auto;
 	padding: 0 15px;
-	background: linear-gradient(30deg, #27002f, #532248);
+	background: linear-gradient(30deg, #05002f, #232253);
 	height: 40px;
 	border: 1px solid #535353;
 	border-radius: 20px;
@@ -169,7 +168,7 @@ body {
 
 .autorization-form__button:hover {
 	cursor: pointer;
-	background: linear-gradient(30deg, #3f004c, #6e2d60);
+	background: linear-gradient(30deg, #00084c, #2d366e);
 }
 
 .invisible {

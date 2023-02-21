@@ -3,7 +3,7 @@ import parceDate from './parceDate';
 export default class Messenger {
   constructor() {
     this.username = null;
-    this.webSocket = new WebSocket('https://ahj-sse-ws-back.onrender.com');
+    this.webSocket = new WebSocket('https://ahj-sse-ws-back.onrender.com/ws');
     this.addListenersToPage = this.addListenersToPage.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.messenger = document.querySelector('.messenger-wrapper');
