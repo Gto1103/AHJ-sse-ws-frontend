@@ -3,7 +3,7 @@ import parceDate from './parceDate';
 export default class Messenger {
   constructor() {
     this.username = null;
-    this.webSocket = new WebSocket('wss://ahj-sse-ws-back.onrender.com/wss');
+    this.webSocket = new WebSocket('wss://localhost:7000/ws');
     this.addListenersToPage = this.addListenersToPage.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.messenger = document.querySelector('.messenger-wrapper');
@@ -25,6 +25,7 @@ export default class Messenger {
       evt.preventDefault();
       this.name = evt.target[0].value;
       this.sendMessage('connect');
+      // this.validateUserName();
       evt.target.classList.add('invisible');
       const messenger = document.querySelector('.messenger-wrapper');
       messenger.classList.remove('invisible');
@@ -46,20 +47,24 @@ export default class Messenger {
         name: this.name,
         userID: this.userID,
       };
-      if (!(content === '')) {
-        const date = parceDate(Date.now());
-        message.date = date;
-        message.content = content;
-      } else {
+      if (content === '') {
         return;
       }
+      const date = parceDate(Date.now());
+      message.date = date;
+      message.content = content;
       this.webSocket.send(JSON.stringify(message));
     }
   }
 
   getMessageFromServer(message) {
     const { type } = message;
+
+    // eslint-disable-next-line no-console
+    console.log(message);
+
     if (type === 'connect' || type === 'disconnect') {
+      this.userID = message.userID;
       this.refreshUserList(message.allUsers);
     }
     if (type === 'message') {
@@ -67,6 +72,10 @@ export default class Messenger {
     }
     if (type === 'reportID') {
       this.userID = message.userID;
+    }
+    if (type === 'error') {
+      // eslint-disable-next-line no-console
+      console.log(message);
     }
   }
 
@@ -80,8 +89,13 @@ export default class Messenger {
       const userImage = document.createElement('div');
       userImage.classList.add('messenger-users__user-image');
       const userName = document.createElement('div');
-      userName.textContent = element;
-      userName.classList.add('messenger-users__user-name');
+      if (element === this.name) {
+        userName.textContent = 'You';
+        userName.classList.add('messenger-users__you-user-name');
+      } else {
+        userName.textContent = element;
+        userName.classList.add('messenger-users__user-name');
+      }
       user.appendChild(userImage);
       user.appendChild(userName);
       newUserList.appendChild(user);
@@ -103,13 +117,36 @@ export default class Messenger {
     author.classList.add('messenger__message-author');
     author.textContent = `${message.name} ${message.date}`;
 
-    const content = document.createElement('div');
-    content.classList.add('messenger__message-content');
-    content.innerHTML = message.content.replace(/\n/g, '<br/>');
+    const chat = document.createElement('div');
+    chat.classList.add('messenger__message-content');
+
+    //  const { content: messages } = message;
+    //  messages.forEach((mess) => {
+    //    if (!mess) return;
+    chat.innerHTML = message.content.replace(/\n/g, '<br/>');
+    //  });
 
     newMessage.appendChild(author);
-    newMessage.appendChild(content);
+    newMessage.appendChild(chat);
 
     messageArea.appendChild(newMessage);
   }
+
+  //   validateUserName() {
+  //     this.webSocket.addEventListener('message', (event) => {
+  //       const message = JSON.parse(event.data);
+  //       console.log(message.allUsers);
+
+//       message.allUsers.forEach((user) => {
+// console.log(user);
+// console.log(this.name);
+//    if (!(user === this.name)) {
+//           console.log('OK name');
+//  return;
+//         }
+//  alert('Error name!')
+//   return;
+//       });
+//     });
+//   }
 }
