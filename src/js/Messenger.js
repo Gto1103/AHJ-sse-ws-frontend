@@ -121,11 +121,7 @@ export default class Messenger {
     const chat = document.createElement('div');
     chat.classList.add('messenger__message-content');
 
-    //  const { content: messages } = message;
-    //  messages.forEach((mess) => {
-    //    if (!mess) return;
     chat.innerHTML = message.content.replace(/\n/g, '<br/>');
-    //  });
 
     newMessage.appendChild(author);
     newMessage.appendChild(chat);
