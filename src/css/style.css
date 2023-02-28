@@ -101,6 +101,11 @@ body {
 	background: linear-gradient(30deg, #03002f, #222253);
 }
 
+.messenger__your-message-author {
+	margin-bottom: 10px;
+	color: #ae2c2c;
+}
+
 .messenger__message-author {
 	margin-bottom: 10px;
 }

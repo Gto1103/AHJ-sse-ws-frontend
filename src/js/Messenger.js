@@ -64,7 +64,6 @@ export default class Messenger {
     console.log(message);
 
     if (type === 'connect' || type === 'disconnect') {
-      this.userID = message.userID;
       this.refreshUserList(message.allUsers);
     }
     if (type === 'message') {
@@ -108,14 +107,16 @@ export default class Messenger {
     const messageArea = this.messenger.querySelector('.messenger__messages');
     const newMessage = document.createElement('div');
     newMessage.classList.add('messenger__message');
+    const author = document.createElement('div');
     if (message.userID === this.userID) {
       newMessage.classList.add('messenger__your-message');
+      author.classList.add('messenger__your-message-author');
+      author.textContent = `${'You'} ${message.date}`;
     } else {
       newMessage.classList.add('messenger__other-message');
+      author.classList.add('messenger__message-author');
+      author.textContent = `${message.name} ${message.date}`;
     }
-    const author = document.createElement('div');
-    author.classList.add('messenger__message-author');
-    author.textContent = `${message.name} ${message.date}`;
 
     const chat = document.createElement('div');
     chat.classList.add('messenger__message-content');
