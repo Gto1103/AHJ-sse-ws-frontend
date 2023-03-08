@@ -9,6 +9,7 @@ export default class Messenger {
     this.messenger = document.querySelector('.messenger-wrapper');
     this.userID = null;
     this.userNames = [];
+    this.error = '';
   }
 
   init() {
@@ -18,6 +19,7 @@ export default class Messenger {
   addListenersToPage() {
     this.webSocket.addEventListener('message', (evt) => {
       const message = JSON.parse(evt.data);
+      if (message.allUsers) this.userNames = message.allUsers;
       this.getMessageFromServer(message);
     });
 
@@ -71,7 +73,6 @@ export default class Messenger {
 
     if (type === 'connect' || type === 'disconnect') {
       this.refreshUserList(message.allUsers);
-      this.userNames = message.allUsers;
     }
     if (type === 'message') {
       this.postMessage(message);
