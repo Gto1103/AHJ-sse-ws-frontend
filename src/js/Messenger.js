@@ -3,11 +3,12 @@ import parceDate from './parceDate';
 export default class Messenger {
   constructor() {
     this.username = null;
-    this.webSocket = new WebSocket('ws://localhost:7000/ws');
+    this.webSocket = new WebSocket('ws://localhost:8000/ws');
     this.addListenersToPage = this.addListenersToPage.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.messenger = document.querySelector('.messenger-wrapper');
     this.userID = null;
+    this.userNames = [];
   }
 
   init() {
@@ -24,11 +25,19 @@ export default class Messenger {
     autorizationForm.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this.name = evt.target[0].value;
-      this.sendMessage('connect');
-      // this.validateUserName();
       evt.target.classList.add('invisible');
       const messenger = document.querySelector('.messenger-wrapper');
       messenger.classList.remove('invisible');
+      this.userNames.forEach((username) => {
+        if (username === this.name) {
+          // eslint-disable-next-line no-alert
+          alert('Error name!');
+          evt.target.classList.remove('invisible');
+          evt.currentTarget.reset();
+          messenger.classList.add('invisible');
+        }
+      });
+      this.sendMessage('connect');
     });
 
     const messageForm = document.querySelector('.messenger__new-message-form');
@@ -60,11 +69,9 @@ export default class Messenger {
   getMessageFromServer(message) {
     const { type } = message;
 
-    // eslint-disable-next-line no-console
-    console.log(message);
-
     if (type === 'connect' || type === 'disconnect') {
       this.refreshUserList(message.allUsers);
+      this.userNames = message.allUsers;
     }
     if (type === 'message') {
       this.postMessage(message);
@@ -128,22 +135,4 @@ export default class Messenger {
 
     messageArea.appendChild(newMessage);
   }
-
-  //   validateUserName() {
-  //     this.webSocket.addEventListener('message', (event) => {
-  //       const message = JSON.parse(event.data);
-  //       console.log(message.allUsers);
-
-//       message.allUsers.forEach((user) => {
-// console.log(user);
-// console.log(this.name);
-//    if (!(user === this.name)) {
-//           console.log('OK name');
-//  return;
-//         }
-//  alert('Error name!')
-//   return;
-//       });
-//     });
-//   }
 }
