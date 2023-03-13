@@ -3,7 +3,7 @@ import parceDate from './parceDate';
 export default class Messenger {
   constructor() {
     this.username = null;
-    this.webSocket = new WebSocket('wss://ahj-sse-ws-back.onrender.com/ws');
+    this.webSocket = new WebSocket('ws://localhost:8000/ws');
     this.addListenersToPage = this.addListenersToPage.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.messenger = document.querySelector('.messenger-wrapper');
@@ -13,13 +13,18 @@ export default class Messenger {
   }
 
   init() {
+    this.bindToDOM();
     this.addListenersToPage();
+  }
+
+  bindToDOM() {
+    // Получаем форму ввода имени
+    this.autorizationForm = document.querySelector('.authorization-form');
   }
 
   addListenersToPage() {
     this.webSocket.addEventListener('message', (evt) => {
       const message = JSON.parse(evt.data);
-      if (message.allUsers) this.userNames = message.allUsers;
       this.getMessageFromServer(message);
     });
 
@@ -27,19 +32,8 @@ export default class Messenger {
     autorizationForm.addEventListener('submit', (evt) => {
       evt.preventDefault();
       this.name = evt.target[0].value;
-      evt.target.classList.add('invisible');
-      const messenger = document.querySelector('.messenger-wrapper');
-      messenger.classList.remove('invisible');
-      this.userNames.forEach((username) => {
-        if (username === this.name) {
-          // eslint-disable-next-line no-alert
-          alert('Error name!');
-          evt.target.classList.remove('invisible');
-          evt.currentTarget.reset();
-          messenger.classList.add('invisible');
-        }
-      });
       this.sendMessage('connect');
+      evt.target[0].value = '';
     });
 
     const messageForm = document.querySelector('.messenger__new-message-form');
@@ -70,16 +64,33 @@ export default class Messenger {
 
   getMessageFromServer(message) {
     const { type } = message;
+    // eslint-disable-next-line no-console
+    console.log(message);
 
     if (type === 'connect' || type === 'disconnect') {
       this.refreshUserList(message.allUsers);
     }
+
+    if (type === 'Used username!') {
+      // eslint-disable-next-line no-alert
+      alert('Username Used!');
+    }
+
+    if (type === 'Username ok') {
+      this.autorizationForm.classList.add('invisible');
+      const messenger = document.querySelector('.messenger-wrapper');
+      messenger.classList.remove('invisible');
+      this.userID = message.userID;
+    }
+
     if (type === 'message') {
       this.postMessage(message);
     }
+
     if (type === 'reportID') {
       this.userID = message.userID;
     }
+
     if (type === 'error') {
       // eslint-disable-next-line no-console
       console.log(message);
