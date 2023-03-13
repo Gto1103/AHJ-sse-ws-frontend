@@ -8,7 +8,6 @@ export default class Messenger {
     this.sendMessage = this.sendMessage.bind(this);
     this.messenger = document.querySelector('.messenger-wrapper');
     this.userID = null;
-    this.error = '';
   }
 
   init() {
